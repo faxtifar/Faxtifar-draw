@@ -12,353 +12,527 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-            background: #f5f5f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1a1a1a;
+            color: #fff;
             height: 100vh;
             overflow: hidden;
         }
 
-        .container {
+        .app-container {
             display: flex;
-            height: 100vh;
             flex-direction: column;
+            height: 100vh;
         }
 
+        /* Header */
         .header {
-            background: white;
-            border-bottom: 1px solid #e0e0e0;
-            padding: 12px 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 12px 20px;
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
 
         .header-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: #333;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 1px;
         }
 
-        .toolbar {
-            background: white;
-            border-bottom: 1px solid #e0e0e0;
-            padding: 8px 12px;
+        .header-info {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        /* Main content */
+        .main-content {
+            display: flex;
+            flex: 1;
+            gap: 0;
+        }
+
+        /* Left Toolbar */
+        .left-toolbar {
+            background: #2a2a2a;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            border-right: 1px solid #444;
+            width: 60px;
+            overflow-y: auto;
+        }
+
+        .tool-btn {
+            width: 48px;
+            height: 48px;
+            border: 2px solid #444;
+            background: #333;
+            color: #fff;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .tool-btn:hover {
+            background: #3a3a3a;
+            border-color: #667eea;
+            transform: scale(1.05);
+        }
+
+        .tool-btn.active {
+            background: #667eea;
+            border-color: #667eea;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+        }
+
+        .tool-separator {
+            height: 1px;
+            background: #444;
+            margin: 4px 0;
+        }
+
+        /* Canvas area */
+        .canvas-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #1a1a1a;
+        }
+
+        /* Top toolbar */
+        .top-toolbar {
+            background: #2a2a2a;
+            padding: 12px 16px;
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            border-bottom: 1px solid #444;
+            flex-wrap: wrap;
+        }
+
+        .toolbar-group {
             display: flex;
             gap: 8px;
             align-items: center;
-            flex-wrap: wrap;
-            overflow-y: auto;
-            max-height: 70px;
+            padding-right: 16px;
+            border-right: 1px solid #444;
         }
 
-        .tool-group {
-            display: flex;
-            gap: 4px;
-            align-items: center;
-            border-right: 1px solid #e0e0e0;
-            padding-right: 8px;
-        }
-
-        .tool-group:last-child {
+        .toolbar-group:last-child {
             border-right: none;
         }
 
-        button {
-            padding: 8px 12px;
-            border: 1px solid #d0d0d0;
-            background: white;
-            border-radius: 4px;
+        .toolbar-label {
+            font-size: 12px;
+            color: #aaa;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .color-input {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #444;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 14px;
+            background: #333;
+        }
+
+        .color-input:hover {
+            border-color: #667eea;
+        }
+
+        .range-input {
+            width: 120px;
+            cursor: pointer;
+        }
+
+        .range-value {
+            font-size: 12px;
+            color: #aaa;
+            min-width: 30px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            background: #333;
+            color: #fff;
+            border: 2px solid #444;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
             transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            min-width: 40px;
-            justify-content: center;
+            font-weight: 500;
         }
 
-        button:hover {
-            background: #f0f0f0;
-            border-color: #999;
+        .btn:hover {
+            background: #3a3a3a;
+            border-color: #667eea;
         }
 
-        button.active {
-            background: #5b5bff;
-            color: white;
-            border-color: #5b5bff;
+        .btn.primary {
+            background: #667eea;
+            border-color: #667eea;
         }
 
-        .color-picker-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 6px;
+        .btn.primary:hover {
+            background: #764ba2;
+            border-color: #764ba2;
         }
 
-        input[type="color"] {
-            width: 36px;
-            height: 36px;
-            border: 1px solid #d0d0d0;
-            border-radius: 4px;
-            cursor: pointer;
+        .btn:active {
+            transform: scale(0.98);
         }
 
-        input[type="range"] {
-            width: 100px;
-            cursor: pointer;
-        }
-
-        .canvas-container {
+        /* Canvas */
+        #drawingCanvas {
             flex: 1;
-            position: relative;
             background: white;
-            overflow: hidden;
-        }
-
-        canvas {
-            display: block;
             cursor: crosshair;
-            background: white;
+            display: block;
         }
 
+        /* Status bar */
         .status-bar {
-            background: white;
-            border-top: 1px solid #e0e0e0;
+            background: #2a2a2a;
             padding: 8px 16px;
             font-size: 12px;
-            color: #666;
+            color: #aaa;
+            border-top: 1px solid #444;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .keyboard-hint {
-            font-size: 11px;
-            color: #999;
-        }
-
-        .button-group {
+        .status-info {
             display: flex;
-            gap: 4px;
+            gap: 20px;
         }
 
-        select {
-            padding: 6px 10px;
-            border: 1px solid #d0d0d0;
+        /* Right panel */
+        .right-panel {
+            background: #2a2a2a;
+            padding: 12px;
+            border-left: 1px solid #444;
+            width: 200px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .panel-section {
+            background: #333;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #444;
+        }
+
+        .panel-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #aaa;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .panel-item {
+            font-size: 12px;
+            color: #ccc;
+            padding: 6px 0;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #444;
             border-radius: 4px;
-            background: white;
-            cursor: pointer;
-            font-size: 13px;
         }
 
-        .divider {
-            width: 1px;
-            height: 24px;
-            background: #e0e0e0;
-            margin: 0 4px;
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
         }
 
-        .right-section {
-            display: flex;
-            gap: 8px;
-            align-items: center;
+        @media (max-width: 1024px) {
+            .right-panel {
+                display: none;
+            }
         }
 
-        .menu-button {
-            width: 36px;
-            height: 36px;
-            padding: 0;
-        }
+        @media (max-width: 768px) {
+            .left-toolbar {
+                width: 50px;
+            }
 
-        .share-button {
-            background: #5b5bff;
-            color: white;
-            border-color: #5b5bff;
-            padding: 8px 16px;
-        }
+            .tool-btn {
+                width: 44px;
+                height: 44px;
+                font-size: 18px;
+            }
 
-        .share-button:hover {
-            background: #4a4aee;
-            border-color: #4a4aee;
+            .top-toolbar {
+                flex-wrap: wrap;
+                gap: 8px;
+                padding: 8px;
+            }
+
+            .toolbar-group {
+                padding-right: 8px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="app-container">
         <div class="header">
-            <div class="header-title">Faxtifar-draw</div>
-            <div class="right-section">
-                <button class="menu-button" title="Меню">☰</button>
-            </div>
+            <div class="header-title">✏️ Faxtifar-draw</div>
+            <div class="header-info">Профессиональное приложение для рисования</div>
         </div>
 
-        <div class="toolbar">
-            <div class="tool-group">
-                <button id="toolSelect" class="active" title="Выделение (V)">⬚</button>
-                <button id="toolPen" title="Карандаш (P)">✏️</button>
-                <button id="toolLine" title="Линия (L)">📏</button>
-                <button id="toolRectangle" title="Прямоугольник (R)">▭</button>
-                <button id="toolCircle" title="Круг (C)">⭕</button>
-                <button id="toolArrow" title="Стрелка (A)">→</button>
+        <div class="main-content">
+            <!-- Left Toolbar -->
+            <div class="left-toolbar">
+                <button class="tool-btn active" data-tool="pen" title="Карандаш (P)">✏️</button>
+                <button class="tool-btn" data-tool="line" title="Линия (L)">📏</button>
+                <button class="tool-btn" data-tool="rectangle" title="Прямоугольник (R)">▭</button>
+                <button class="tool-btn" data-tool="circle" title="Круг (C)">⭕</button>
+                <button class="tool-btn" data-tool="arrow" title="Стрелка (A)">➜</button>
+                <button class="tool-btn" data-tool="text" title="Текст (T)">A</button>
+                
+                <div class="tool-separator"></div>
+                
+                <button class="tool-btn" data-tool="eraser" title="Ластик (E)">🧹</button>
+                <button class="tool-btn" data-tool="select" title="Выделение (V)">⬚</button>
             </div>
 
-            <div class="tool-group">
-                <button id="toolText" title="Текст (T)">A</button>
-                <button id="toolErase" title="Ластик (E)">🧹</button>
-            </div>
+            <!-- Canvas area -->
+            <div class="canvas-wrapper">
+                <!-- Top toolbar -->
+                <div class="top-toolbar">
+                    <div class="toolbar-group">
+                        <span class="toolbar-label">Цвет</span>
+                        <input type="color" id="colorPicker" class="color-input" value="#000000" title="Выбрать цвет">
+                    </div>
 
-            <div class="tool-group">
-                <div class="color-picker-wrapper">
-                    <label for="colorPicker" style="font-size: 12px; color: #666;">Цвет:</label>
-                    <input type="color" id="colorPicker" value="#000000" title="Выбрать цвет">
+                    <div class="toolbar-group">
+                        <span class="toolbar-label">Фон</span>
+                        <input type="color" id="bgColorPicker" class="color-input" value="#ffffff" title="Цвет фона">
+                    </div>
+
+                    <div class="toolbar-group">
+                        <span class="toolbar-label">Размер</span>
+                        <input type="range" id="brushSize" class="range-input" min="1" max="100" value="3">
+                        <span class="range-value" id="brushSizeValue">3</span>
+                    </div>
+
+                    <div class="toolbar-group">
+                        <span class="toolbar-label">Прозрачность</span>
+                        <input type="range" id="opacity" class="range-input" min="0" max="100" value="100">
+                        <span class="range-value" id="opacityValue">100%</span>
+                    </div>
+
+                    <div class="toolbar-group">
+                        <button class="btn" id="btnUndo" title="Отменить (Ctrl+Z)">↶ Отменить</button>
+                        <button class="btn" id="btnRedo" title="Повторить (Ctrl+Y)">↷ Повторить</button>
+                    </div>
+
+                    <div class="toolbar-group">
+                        <button class="btn" id="btnClear" title="Очистить холст">🗑️ Очистить</button>
+                        <button class="btn" id="btnDownload" title="Скачать PNG">⬇️ Скачать</button>
+                        <button class="btn primary" id="btnSave" title="Сохранить">💾 Сохранить</button>
+                    </div>
+                </div>
+
+                <!-- Canvas -->
+                <canvas id="drawingCanvas"></canvas>
+
+                <!-- Status bar -->
+                <div class="status-bar">
+                    <div class="status-info">
+                        <span id="toolStatus">Инструмент: Карандаш</span>
+                        <span id="coordStatus">X: 0, Y: 0</span>
+                    </div>
+                    <div>Faxtifar-draw v2.0</div>
                 </div>
             </div>
 
-            <div class="tool-group">
-                <div class="color-picker-wrapper">
-                    <label for="bgColorPicker" style="font-size: 12px; color: #666;">Фон:</label>
-                    <input type="color" id="bgColorPicker" value="#ffffff" title="Цвет фона">
+            <!-- Right Panel -->
+            <div class="right-panel">
+                <div class="panel-section">
+                    <div class="panel-title">Информация</div>
+                    <div class="panel-item">
+                        <span>Размер холста:</span>
+                        <span id="canvasSize">0x0</span>
+                    </div>
+                    <div class="panel-item">
+                        <span>История:</span>
+                        <span id="historyCount">0</span>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <div class="panel-title">Горячие клавиши</div>
+                    <div class="panel-item"><span>P</span> - Карандаш</div>
+                    <div class="panel-item"><span>L</span> - Линия</div>
+                    <div class="panel-item"><span>R</span> - Прямоугольник</div>
+                    <div class="panel-item"><span>C</span> - Круг</div>
+                    <div class="panel-item"><span>A</span> - Стрелка</div>
+                    <div class="panel-item"><span>T</span> - Текст</div>
+                    <div class="panel-item"><span>E</span> - Ластик</div>
+                    <div class="panel-item"><span>V</span> - Выделение</div>
+                    <div class="panel-item"><span>Ctrl+Z</span> - Отменить</div>
+                    <div class="panel-item"><span>Ctrl+Y</span> - Повторить</div>
                 </div>
             </div>
-
-            <div class="tool-group">
-                <label for="brushSize" style="font-size: 12px; color: #666;">Размер:</label>
-                <input type="range" id="brushSize" min="1" max="50" value="2" title="Размер кисти">
-                <span id="brushSizeValue" style="font-size: 12px; color: #666; min-width: 25px;">2</span>
-            </div>
-
-            <div class="tool-group">
-                <button id="btnUndo" title="Отменить (Ctrl+Z)">↶</button>
-                <button id="btnRedo" title="Повторить (Ctrl+Y)">↷</button>
-            </div>
-
-            <div class="tool-group">
-                <button id="btnClear" title="Очистить">🗑️</button>
-                <button id="btnDownload" title="Скачать">⬇️</button>
-                <button id="btnSave" title="Сохранить">💾</button>
-            </div>
-        </div>
-
-        <div class="canvas-container">
-            <canvas id="drawingCanvas"></canvas>
-        </div>
-
-        <div class="status-bar">
-            <div>Faxtifar-draw v1.0</div>
-            <div class="keyboard-hint">Нажмите на инструмент или используйте клавиши</div>
         </div>
     </div>
 
     <script>
         const canvas = document.getElementById('drawingCanvas');
-        const ctx = canvas.getContext('2d');
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
 
-        // Установить размер canvas
+        // Состояние приложения
+        let state = {
+            currentTool: 'pen',
+            currentColor: '#000000',
+            bgColor: '#ffffff',
+            brushSize: 3,
+            opacity: 1,
+            isDrawing: false,
+            startX: 0,
+            startY: 0,
+            history: [],
+            historyStep: -1
+        };
+
+        // Инициализация canvas
         function resizeCanvas() {
-            const container = canvas.parentElement;
-            canvas.width = container.clientWidth;
-            canvas.height = container.clientHeight;
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+            updateCanvasSize();
             redraw();
         }
 
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
-        // Состояние
-        let isDrawing = false;
-        let currentTool = 'select';
-        let currentColor = '#000000';
-        let currentBgColor = '#ffffff';
-        let brushSize = 2;
-        let startX, startY;
-        let history = [];
-        let historyStep = -1;
-
-        // История для undo/redo
+        // История
         function saveState() {
-            historyStep++;
-            if (historyStep < history.length) {
-                history.length = historyStep;
+            state.historyStep++;
+            if (state.historyStep < state.history.length) {
+                state.history.length = state.historyStep;
             }
-            history.push(canvas.toDataURL());
+            state.history.push(canvas.toDataURL());
+            updateHistoryCount();
         }
 
         function redraw() {
-            if (historyStep >= 0 && history[historyStep]) {
+            if (state.historyStep >= 0 && state.history[state.historyStep]) {
                 const img = new Image();
-                img.src = history[historyStep];
-                img.onload = function() {
+                img.src = state.history[state.historyStep];
+                img.onload = () => {
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    ctx.fillStyle = currentBgColor;
+                    ctx.fillStyle = state.bgColor;
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
                     ctx.drawImage(img, 0, 0);
                 };
             }
         }
 
-        // Инструменты
-        const tools = {
-            select: 'toolSelect',
-            pen: 'toolPen',
-            line: 'toolLine',
-            rectangle: 'toolRectangle',
-            circle: 'toolCircle',
-            arrow: 'toolArrow',
-            text: 'toolText',
-            erase: 'toolErase'
-        };
-
+        // Установка инструмента
         function setTool(tool) {
-            currentTool = tool;
-            document.querySelectorAll('.tool-group button').forEach(btn => {
+            state.currentTool = tool;
+            
+            document.querySelectorAll('.tool-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
-            document.getElementById(tools[tool]).classList.add('active');
+            document.querySelector(`[data-tool="${tool}"]`).classList.add('active');
+            
+            const toolNames = {
+                'pen': 'Карандаш',
+                'line': 'Линия',
+                'rectangle': 'Прямоугольник',
+                'circle': 'Круг',
+                'arrow': 'Стрелка',
+                'text': 'Текст',
+                'eraser': 'Ластик',
+                'select': 'Выделение'
+            };
+            
+            document.getElementById('toolStatus').textContent = `Инструмент: ${toolNames[tool]}`;
+            
             canvas.style.cursor = tool === 'select' ? 'default' : 'crosshair';
         }
 
         // Обработчики кнопок инструментов
-        Object.entries(tools).forEach(([tool, btnId]) => {
-            document.getElementById(btnId).addEventListener('click', () => setTool(tool));
+        document.querySelectorAll('.tool-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                setTool(btn.dataset.tool);
+            });
         });
 
         // Цвет и размер
         document.getElementById('colorPicker').addEventListener('change', (e) => {
-            currentColor = e.target.value;
+            state.currentColor = e.target.value;
         });
 
         document.getElementById('bgColorPicker').addEventListener('change', (e) => {
-            currentBgColor = e.target.value;
-            ctx.fillStyle = currentBgColor;
+            state.bgColor = e.target.value;
+            ctx.fillStyle = state.bgColor;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             redraw();
         });
 
         document.getElementById('brushSize').addEventListener('input', (e) => {
-            brushSize = e.target.value;
-            document.getElementById('brushSizeValue').textContent = brushSize;
+            state.brushSize = e.target.value;
+            document.getElementById('brushSizeValue').textContent = state.brushSize;
+        });
+
+        document.getElementById('opacity').addEventListener('input', (e) => {
+            state.opacity = e.target.value / 100;
+            document.getElementById('opacityValue').textContent = e.target.value + '%';
         });
 
         // Undo/Redo
         document.getElementById('btnUndo').addEventListener('click', () => {
-            if (historyStep > 0) {
-                historyStep--;
+            if (state.historyStep > 0) {
+                state.historyStep--;
                 redraw();
+                updateHistoryCount();
             }
         });
 
         document.getElementById('btnRedo').addEventListener('click', () => {
-            if (historyStep < history.length - 1) {
-                historyStep++;
+            if (state.historyStep < state.history.length - 1) {
+                state.historyStep++;
                 redraw();
+                updateHistoryCount();
             }
         });
 
         // Очистить
         document.getElementById('btnClear').addEventListener('click', () => {
             if (confirm('Вы уверены, что хотите очистить холст?')) {
-                ctx.fillStyle = currentBgColor;
+                ctx.fillStyle = state.bgColor;
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 saveState();
             }
@@ -372,24 +546,24 @@
             link.click();
         });
 
-        // Сохранить в localStorage
+        // Сохранить
         document.getElementById('btnSave').addEventListener('click', () => {
             localStorage.setItem('faxtifar-draw', canvas.toDataURL());
-            alert('Рисунок сохранён!');
+            alert('Рисунок сохранён в браузер!');
         });
 
-        // Загрузить из localStorage при загрузке страницы
+        // Загрузить при загрузке
         window.addEventListener('load', () => {
             const saved = localStorage.getItem('faxtifar-draw');
             if (saved) {
                 const img = new Image();
                 img.src = saved;
-                img.onload = function() {
+                img.onload = () => {
                     ctx.drawImage(img, 0, 0);
                     saveState();
                 };
             } else {
-                ctx.fillStyle = currentBgColor;
+                ctx.fillStyle = state.bgColor;
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 saveState();
             }
@@ -397,90 +571,103 @@
 
         // Рисование
         canvas.addEventListener('mousedown', (e) => {
-            isDrawing = true;
+            state.isDrawing = true;
             const rect = canvas.getBoundingClientRect();
-            startX = e.clientX - rect.left;
-            startY = e.clientY - rect.top;
+            state.startX = e.clientX - rect.left;
+            state.startY = e.clientY - rect.top;
 
-            if (currentTool === 'text') {
+            if (state.currentTool === 'text') {
                 const text = prompt('Введите текст:');
                 if (text) {
-                    ctx.font = '16px Arial';
-                    ctx.fillStyle = currentColor;
-                    ctx.fillText(text, startX, startY);
+                    ctx.font = 'bold 16px Arial';
+                    ctx.fillStyle = state.currentColor;
+                    ctx.globalAlpha = state.opacity;
+                    ctx.fillText(text, state.startX, state.startY);
+                    ctx.globalAlpha = 1;
                     saveState();
                 }
-                isDrawing = false;
+                state.isDrawing = false;
+            } else if (state.currentTool === 'pen') {
+                ctx.beginPath();
+                ctx.moveTo(state.startX, state.startY);
             }
         });
 
         canvas.addEventListener('mousemove', (e) => {
-            if (!isDrawing) return;
+            if (!state.isDrawing) return;
 
             const rect = canvas.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
 
-            if (currentTool === 'pen') {
-                ctx.strokeStyle = currentColor;
-                ctx.lineWidth = brushSize;
+            document.getElementById('coordStatus').textContent = `X: ${Math.round(x)}, Y: ${Math.round(y)}`;
+
+            if (state.currentTool === 'pen') {
+                ctx.strokeStyle = state.currentColor;
+                ctx.lineWidth = state.brushSize;
                 ctx.lineCap = 'round';
                 ctx.lineJoin = 'round';
+                ctx.globalAlpha = state.opacity;
                 ctx.lineTo(x, y);
                 ctx.stroke();
-            } else if (currentTool === 'erase') {
-                ctx.clearRect(x - brushSize / 2, y - brushSize / 2, brushSize, brushSize);
+                ctx.globalAlpha = 1;
+            } else if (state.currentTool === 'eraser') {
+                ctx.clearRect(x - state.brushSize / 2, y - state.brushSize / 2, state.brushSize, state.brushSize);
             }
         });
 
         canvas.addEventListener('mouseup', (e) => {
-            if (!isDrawing) return;
-            isDrawing = false;
+            if (!state.isDrawing) return;
+            state.isDrawing = false;
 
             const rect = canvas.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
 
-            if (currentTool === 'line') {
+            ctx.globalAlpha = state.opacity;
+
+            if (state.currentTool === 'line') {
                 redraw();
-                ctx.strokeStyle = currentColor;
-                ctx.lineWidth = brushSize;
+                ctx.strokeStyle = state.currentColor;
+                ctx.lineWidth = state.brushSize;
                 ctx.beginPath();
-                ctx.moveTo(startX, startY);
+                ctx.moveTo(state.startX, state.startY);
                 ctx.lineTo(x, y);
                 ctx.stroke();
                 saveState();
-            } else if (currentTool === 'rectangle') {
+            } else if (state.currentTool === 'rectangle') {
                 redraw();
-                ctx.strokeStyle = currentColor;
-                ctx.lineWidth = brushSize;
-                ctx.strokeRect(startX, startY, x - startX, y - startY);
+                ctx.strokeStyle = state.currentColor;
+                ctx.lineWidth = state.brushSize;
+                ctx.strokeRect(state.startX, state.startY, x - state.startX, y - state.startY);
                 saveState();
-            } else if (currentTool === 'circle') {
+            } else if (state.currentTool === 'circle') {
                 redraw();
-                ctx.strokeStyle = currentColor;
-                ctx.lineWidth = brushSize;
-                const radius = Math.sqrt(Math.pow(x - startX, 2) + Math.pow(y - startY, 2));
+                ctx.strokeStyle = state.currentColor;
+                ctx.lineWidth = state.brushSize;
+                const radius = Math.sqrt(Math.pow(x - state.startX, 2) + Math.pow(y - state.startY, 2));
                 ctx.beginPath();
-                ctx.arc(startX, startY, radius, 0, 2 * Math.PI);
+                ctx.arc(state.startX, state.startY, radius, 0, 2 * Math.PI);
                 ctx.stroke();
                 saveState();
-            } else if (currentTool === 'arrow') {
+            } else if (state.currentTool === 'arrow') {
                 redraw();
-                drawArrow(startX, startY, x, y);
+                drawArrow(state.startX, state.startY, x, y);
                 saveState();
-            } else if (currentTool === 'pen' || currentTool === 'erase') {
+            } else if (state.currentTool === 'pen') {
                 ctx.beginPath();
                 saveState();
             }
+
+            ctx.globalAlpha = 1;
         });
 
         function drawArrow(fromX, fromY, toX, toY) {
-            const headlen = 15;
+            const headlen = 20;
             const angle = Math.atan2(toY - fromY, toX - fromX);
 
-            ctx.strokeStyle = currentColor;
-            ctx.lineWidth = brushSize;
+            ctx.strokeStyle = state.currentColor;
+            ctx.lineWidth = state.brushSize;
             ctx.beginPath();
             ctx.moveTo(fromX, fromY);
             ctx.lineTo(toX, toY);
@@ -506,21 +693,30 @@
                 }
             } else {
                 switch(e.key.toLowerCase()) {
-                    case 'v': setTool('select'); break;
                     case 'p': setTool('pen'); break;
                     case 'l': setTool('line'); break;
                     case 'r': setTool('rectangle'); break;
                     case 'c': setTool('circle'); break;
                     case 'a': setTool('arrow'); break;
                     case 't': setTool('text'); break;
-                    case 'e': setTool('erase'); break;
+                    case 'e': setTool('eraser'); break;
+                    case 'v': setTool('select'); break;
                 }
             }
         });
 
+        // Обновление информации
+        function updateCanvasSize() {
+            document.getElementById('canvasSize').textContent = `${canvas.width}x${canvas.height}`;
+        }
+
+        function updateHistoryCount() {
+            document.getElementById('historyCount').textContent = `${state.historyStep + 1}/${state.history.length}`;
+        }
+
         // Инициализация
         setTool('pen');
-        ctx.fillStyle = currentBgColor;
+        ctx.fillStyle = state.bgColor;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         saveState();
     </script>
