@@ -256,6 +256,52 @@
             justify-content: space-between;
         }
 
+        .layer-item {
+            background: #2a2a2a;
+            padding: 8px;
+            border-radius: 4px;
+            margin-bottom: 4px;
+            cursor: pointer;
+            border: 1px solid #444;
+            transition: all 0.2s;
+        }
+
+        .layer-item:hover {
+            border-color: #667eea;
+            background: #333;
+        }
+
+        .layer-item.active {
+            background: #667eea;
+            border-color: #667eea;
+        }
+
+        .layer-name {
+            font-size: 11px;
+            margin-bottom: 4px;
+        }
+
+        .layer-controls {
+            display: flex;
+            gap: 4px;
+            font-size: 10px;
+        }
+
+        .layer-btn {
+            flex: 1;
+            padding: 2px 4px;
+            background: #444;
+            border: none;
+            border-radius: 2px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 10px;
+        }
+
+        .layer-btn:hover {
+            background: #555;
+        }
+
         /* Scrollbar styling */
         ::-webkit-scrollbar {
             width: 8px;
@@ -306,8 +352,8 @@
 <body>
     <div class="app-container">
         <div class="header">
-            <div class="header-title">✏️ Faxtifar-draw</div>
-            <div class="header-info">Профессиональное приложение для рисования</div>
+            <div class="header-title">✏️ Faxtifar-draw Pro</div>
+            <div class="header-info">Профессиональное приложение для рисования с поддержкой слоёв</div>
         </div>
 
         <div class="main-content">
@@ -374,12 +420,18 @@
                         <span id="toolStatus">Инструмент: Карандаш</span>
                         <span id="coordStatus">X: 0, Y: 0</span>
                     </div>
-                    <div>Faxtifar-draw v2.0 | Все функции работают идеально!</div>
+                    <div>Faxtifar-draw Pro v2.5</div>
                 </div>
             </div>
 
             <!-- Right Panel -->
             <div class="right-panel">
+                <div class="panel-section">
+                    <div class="panel-title">Слои</div>
+                    <div id="layersContainer"></div>
+                    <button class="btn" id="btnAddLayer" style="width: 100%; margin-top: 8px;">+ Новый слой</button>
+                </div>
+
                 <div class="panel-section">
                     <div class="panel-title">Информация</div>
                     <div class="panel-item">
@@ -389,6 +441,10 @@
                     <div class="panel-item">
                         <span>История:</span>
                         <span id="historyCount">0</span>
+                    </div>
+                    <div class="panel-item">
+                        <span>Слоёв:</span>
+                        <span id="layerCount">1</span>
                     </div>
                 </div>
 
@@ -413,6 +469,7 @@
         const canvas = document.getElementById('drawingCanvas');
         const ctx = canvas.getContext('2d', { willReadFrequently: true });
 
+        // Состояние приложения
         let state = {
             currentTool: 'pen',
             currentColor: '#000000',
@@ -423,9 +480,12 @@
             startX: 0,
             startY: 0,
             history: [],
-            historyStep: -1
+            historyStep: -1,
+            layers: [],
+            currentLayerIndex: 0
         };
 
+        // Инициализация canvas
         function resizeCanvas() {
             const rect = canvas.parentElement.getBoundingClientRect();
             canvas.width = rect.width;
@@ -437,6 +497,7 @@
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
+        // История
         function saveState() {
             state.historyStep++;
             if (state.historyStep < state.history.length) {
@@ -459,6 +520,7 @@
             }
         }
 
+        // Установка инструмента
         function setTool(tool) {
             state.currentTool = tool;
             
@@ -480,15 +542,18 @@
             };
             
             document.getElementById('toolStatus').textContent = `Инструмент: ${toolNames[tool]}`;
+            
             canvas.style.cursor = tool === 'select' ? 'default' : 'crosshair';
         }
 
+        // Обработчики кнопок инструментов
         document.querySelectorAll('.tool-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 setTool(btn.dataset.tool);
             });
         });
 
+        // Цвет и размер
         document.getElementById('colorPicker').addEventListener('change', (e) => {
             state.currentColor = e.target.value;
         });
@@ -510,6 +575,7 @@
             document.getElementById('opacityValue').textContent = e.target.value + '%';
         });
 
+        // Undo/Redo
         document.getElementById('btnUndo').addEventListener('click', () => {
             if (state.historyStep > 0) {
                 state.historyStep--;
@@ -526,6 +592,7 @@
             }
         });
 
+        // Очистить
         document.getElementById('btnClear').addEventListener('click', () => {
             if (confirm('Вы уверены, что хотите очистить холст?')) {
                 ctx.fillStyle = state.bgColor;
@@ -534,6 +601,7 @@
             }
         });
 
+        // Скачать
         document.getElementById('btnDownload').addEventListener('click', () => {
             const link = document.createElement('a');
             link.href = canvas.toDataURL('image/png');
@@ -541,11 +609,13 @@
             link.click();
         });
 
+        // Сохранить
         document.getElementById('btnSave').addEventListener('click', () => {
             localStorage.setItem('faxtifar-draw', canvas.toDataURL());
             alert('Рисунок сохранён в браузер!');
         });
 
+        // Загрузить при загрузке
         window.addEventListener('load', () => {
             const saved = localStorage.getItem('faxtifar-draw');
             if (saved) {
@@ -562,6 +632,7 @@
             }
         });
 
+        // Рисование
         canvas.addEventListener('mousedown', (e) => {
             state.isDrawing = true;
             const rect = canvas.getBoundingClientRect();
@@ -679,7 +750,7 @@
         function floodFill(x, y, color) {
             const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
             const data = imageData.data;
-            const startPos = (y * canvas.width + x) << 2;
+            const startPos = (Math.round(y) * canvas.width + Math.round(x)) << 2;
             const startR = data[startPos];
             const startG = data[startPos + 1];
             const startB = data[startPos + 2];
@@ -719,6 +790,7 @@
             } : { r: 0, g: 0, b: 0 };
         }
 
+        // Клавиатурные сокращения
         document.addEventListener('keydown', (e) => {
             if (e.ctrlKey || e.metaKey) {
                 if (e.key === 'z') {
@@ -743,6 +815,7 @@
             }
         });
 
+        // Обновление информации
         function updateCanvasSize() {
             document.getElementById('canvasSize').textContent = `${canvas.width}x${canvas.height}`;
         }
@@ -751,6 +824,7 @@
             document.getElementById('historyCount').textContent = `${state.historyStep + 1}/${state.history.length}`;
         }
 
+        // Инициализация
         setTool('pen');
         ctx.fillStyle = state.bgColor;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
